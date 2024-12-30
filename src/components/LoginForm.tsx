@@ -1,17 +1,25 @@
 "use client";
 
 import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 
 
 export default function LoginForm() {
     async function login(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        try {
+        
             const formData = new FormData(e.currentTarget);
-            console.log(formData.get('email'));
-        } catch (error) {
-          console.error("Erro durante o login:", error);
-        }
+            
+            const data = {
+                email: formData.get('email'),
+                password: formData.get('password')
+            };
+            signIn('credentials', {
+                ...data,
+                callbackUrl: '/userpage'
+
+            });
+        
     }
 
     return (
