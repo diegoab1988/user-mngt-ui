@@ -2,9 +2,14 @@
 
 import Image from 'next/image';
 import { signIn } from 'next-auth/react';
-
+import { useSearchParams } from 'next/navigation';
 
 export default function LoginForm() {
+   const searchParams = useSearchParams();
+
+   const error = searchParams.get('error');
+
+
     async function login(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         
@@ -16,7 +21,7 @@ export default function LoginForm() {
             };
             signIn('credentials', {
                 ...data,
-                callbackUrl: '/userpage'
+                callbackUrl: '/dashboard'
 
             });
         
@@ -51,6 +56,7 @@ export default function LoginForm() {
                 className="btn btn-primary w-full"
                 title="Submit">Login
                 </button>
+                {error === 'CredentialsSignin' && <div className="text-red-500">Credenciais inválidas</div>}
               </form>
     )
 
